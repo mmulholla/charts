@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  test-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    description: A Helm chart for Kubernetes 2
+    icon: https://www.example.com/chart-icon.png
+    kubeVersion: 1.20.0
+    name: chart
+    type: application
+    version: 0.1.0-v3.valid
+generated: '2021-04-20T16:57:43.672758+00:00'
