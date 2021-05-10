@@ -120,7 +120,7 @@ jobs:
           path: pr/
 
   enable-auto-merge-and-approve-pr:
-    needs[sanity-check,build-and-verify]
+    needs: [sanity-check,build-and-verify]
     name: Enable auto-merge and approve PR
     runs-on: ubuntu-latest
     steps:
