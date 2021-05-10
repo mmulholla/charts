@@ -1,7 +1,7 @@
 name: Chart Submission Certification
 
 on:
-  pull_request:
+  pull_request_target:
 
 jobs:
 
@@ -124,16 +124,18 @@ jobs:
     name: Enable auto-merge and approve PR
     runs-on: ubuntu-latest
     steps:
-      - uses: alexwilson/enable-github-automerge-action@1.0.0
+      - uses: hmarr/auto-approve-action@v2.0.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: "SQUASH"
-      - uses: hmarr/auto-approve-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.13.1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
 
   release-charts:
     runs-on: ubuntu-20.04
+    concurrency: release-charts
     needs: enable-auto-merge-and-approve-pr
     steps:
       - name: Checkout
