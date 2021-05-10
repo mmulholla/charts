@@ -13,7 +13,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         merge-method: "SQUASH"
-
     - uses: hmarr/auto-approve-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
