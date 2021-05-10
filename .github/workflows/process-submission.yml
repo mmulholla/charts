@@ -1,7 +1,7 @@
 name: Chart Submission Certification
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
 
