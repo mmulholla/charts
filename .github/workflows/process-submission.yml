@@ -1,0 +1,180 @@
+Name: Chart Submission Certification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+
+  sanity-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Sanity Check PR Content
+        id: sanity_check_pr_content
+        continue-on-error: true
+        run: |
+          python3 -m venv ve1
+          cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
+          cd scripts && ../ve1/bin/python3 setup.py install && cd ..
+          ./ve1/bin/sanity-check-pr --api-url=${{ github.event.pull_request._links.self.href }}
+
+      - uses: actions/github-script@v3
+        if: ${{ steps.sanity_check_pr_content.outcome == 'success'}}
+        continue-on-error: true
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['sanity-ok']
+            })
+
+      - uses: actions/github-script@v3
+        if: ${{ steps.sanity_check_pr_content.outcome == 'failure'}}
+        continue-on-error: true
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'sanity-ok'
+            })
+
+      - uses: actions/github-script@v3
+        if: ${{ always() && steps.sanity_check_pr_content.outcome == 'success'}}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for the PR!  The sanity check has been a success. Please wait for the test result.'
+            })
+
+      - uses: actions/github-script@v3
+        if: ${{ always() && steps.sanity_check_pr_content.outcome == 'failure'}}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for the PR!  The sanity check has been a failure. Please ensure only chart related files have been modified.'
+            })
+
+      - name: Reflect on Sanity Check PR Content
+        if: ${{ always() && steps.sanity_check_pr_content.outcome == 'failure'}}
+        run: |
+          echo "The 'Sanity Check PR Content' step has failed."
+          exit 1
+
+  build-and-verify:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Save check run id
+        run: |
+          CHECK_SUITE_URL=$(curl -s -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} | jq -r '.check_suite_url')
+          CHECK_RUN_ID=$(curl -s -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.antiope-preview+json" $CHECK_SUITE_URL/check-runs | jq '.check_runs[] | select(.name=="build-and-verify") | .id ')
+          mkdir -p ./pr
+          echo $CHECK_RUN_ID > ./pr/build-verify-check-run-id
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Verify PR
+        run: |
+          gpg --version
+          python3 -m venv ve1
+          cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
+          docker pull quay.io/redhat-certification/chart-verifier:latest
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          cd scripts && ../ve1/bin/python3 setup.py install && cd ..
+          ve1/bin/chart-pr-review --directory=./pr --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
+
+      - name: Save PR artifact
+        if: always()
+        run: |
+          ve1/bin/pr-artifact --directory=./pr --pr-number=${{ github.event.number }} --api-url=${{ github.event.pull_request._links.self.href }}
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: pr
+          path: pr/
+
+  enable-auto-merge-and-approve-pr:
+    needs[sanity-check,build-and-verify]
+    name: Enable auto-merge and approve PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alexwilson/enable-github-automerge-action@1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: "SQUASH"
+      - uses: hmarr/auto-approve-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  release-charts:
+    runs-on: ubuntu-20.04
+    needs: enable-auto-merge-and-approve-pr
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Release Charts
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        id: release-charts
+        run: |
+          curl -L -o cr.tar.gz https://github.com/helm/chart-releaser/releases/download/v1.2.0/chart-releaser_1.2.0_linux_amd64.tar.gz
+          tar zxvf cr.tar.gz
+          sudo cp -f cr /usr/local/bin/cr
+          python3 -m venv ve1
+          cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
+          docker pull quay.io/redhat-certification/chart-verifier:latest
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          cd scripts && ../ve1/bin/python3 setup.py install && cd ..
+          INDEX_BRANCH=$(if [ "${GITHUB_REF}" = "main" ]; then echo "refs/heads/gh-pages"; else echo "${GITHUB_REF}-gh-pages"; fi)
+          ve1/bin/chart-repo-manager --repository=${{ github.repository }} --index-branch=${INDEX_BRANCH}
+
+      - name: Release
+        uses: softprops/action-gh-release@master
+        continue-on-error: true
+        with:
+          tag_name: ${{ steps.release-charts.outputs.tag }}
+          files: report.yaml
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
