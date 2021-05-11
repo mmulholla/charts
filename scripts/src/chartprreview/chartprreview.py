@@ -181,7 +181,7 @@ def check_report_success(directory, report_path, version):
     data = open(report_path).read()
     print("[INFO] Full report: ")
     print(data)
-    print("::set-output name=report-content::",data)
+    print(f"::set-output name=report-content::{data}")
     try:
         out = yaml.load(data, Loader=Loader)
     except yaml.scanner.ScannerError as err:
@@ -260,7 +260,7 @@ def generate_verify_report(directory, category, organization, chart, version):
         sys.exit(1)
     if not os.path.exists(report_path):
         if not src_exists and not tar_exists:
-            msg = "[ERROR] One of these must be modifed: report, chart source, or tarball"
+            msg = "[ERROR] One of these must be modified: report, chart source, or tarball"
             write_error_log(directory, msg)
             sys.exit(1)
     if src_exists:
