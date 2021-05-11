@@ -4,5 +4,5 @@ chart:
 users:
 - githubUsername: mmulholla
 vendor:
-  label: acme
-  name: acme
+  label: martin
+  name: martin
