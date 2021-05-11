@@ -59,9 +59,9 @@ def check_owners_file_against_directory_structure(username, category, organizati
     msgs = []
     if organization != vendor_label:
         error_exit = True
-        msg.append(f"[ERROR] vendor/label in OWNERS file ({vendor_label}) doesn't match the directory structure (charts/{category}/{organization}/{chart})")
+        msgs.append(f"[ERROR] vendor/label in OWNERS file ({vendor_label}) doesn't match the directory structure (charts/{category}/{organization}/{chart})")
     if chart != chart_name:
-        msg.append(f"[ERROR] chart/name in OWNERS file ({chart_name}) doesn't match the directory structure (charts/{category}/{organization}/{chart})")
+        msgs.append(f"[ERROR] chart/name in OWNERS file ({chart_name}) doesn't match the directory structure (charts/{category}/{organization}/{chart})")
         error_exit = True
     if error_exit:
         write_error_log(directory, *msgs)
