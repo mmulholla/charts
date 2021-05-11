@@ -50,7 +50,8 @@ def check_report_exists(category, organization, chart, version):
 
 def generate_report(chart_file_name):
     cwd = os.getcwd()
-    out = subprocess.run(["docker", "run", "-v", cwd+":/charts:z", "--rm", "quay.io/redhat-certification/chart-verifier:latest", "verify", os.path.join("/charts", chart_file_name)], capture_output=True)
+    out = os.environ.get("REPORT_CONTENT")
+    #out = subprocess.run(["docker", "run", "-v", cwd+":/charts:z", "--rm", "quay.io/redhat-certification/chart-verifier:latest", "verify", os.path.join("/charts", chart_file_name)], capture_output=True)
     stderr = out.stderr.decode("utf-8")
     report_path = os.path.join(cwd, "report.yaml")
     with open(report_path, "w") as fd:
@@ -119,14 +120,14 @@ def create_index_from_chart(indexdir, repository, branch, category, organization
     crt = yaml.load(p, Loader=Loader)
     return crt
 
-def create_index(category):
-    out = os.environ.get("REPORT_ANNOTATIONS")
+def create_index_from_report(category, report_path):
+    out = subprocess.run(["scripts/src/chartprreview/verify-report.sh", "annotations", report_path], capture_output=True)
     r = out.stdout.decode("utf-8")
     print("annotation",r)
     annotations = json.loads(r)
     err = out.stderr.decode("utf-8")
     if err.strip():
-        print("Error getting report annotations:", err)
+        print("Error extracting annotations from the report:", err)
         sys.exit(1)
 
     print("category:", category)
@@ -251,6 +252,7 @@ def main():
     print("[INFO] Creating Git worktree for index branch")
     indexdir = create_worktree_for_index(branch)
 
+    print("[INFO] Report Content : ", os.environ.get("REPORT_CONTENT"))
     if chart_source_exists or chart_tarball_exists:
         if chart_source_exists:
             prepare_chart_source_for_release(category, organization, chart, version)
