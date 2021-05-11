@@ -199,8 +199,9 @@ def check_report_success(directory, report_path, version):
         sys.exit(1)
 
     out = subprocess.run(["scripts/src/chartprreview/verify-report.sh", "annotations", report_path], capture_output=True)
+    print("::set-output name=report-annotations::",out)
     r = out.stdout.decode("utf-8")
-    print("[INFO] Annotations:", r)
+    print("::set-output name=report-annotations::",r)
     annotations = json.loads(r)
     err = out.stderr.decode("utf-8")
     if err.strip():

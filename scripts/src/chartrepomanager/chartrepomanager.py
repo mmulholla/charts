@@ -119,14 +119,14 @@ def create_index_from_chart(indexdir, repository, branch, category, organization
     crt = yaml.load(p, Loader=Loader)
     return crt
 
-def create_index_from_report(category, report_path):
-    out = subprocess.run(["scripts/src/chartprreview/verify-report.sh", "annotations", report_path], capture_output=True)
+def create_index(category):
+    out = os.environ.get("REPORT_ANNOTATIONS")
     r = out.stdout.decode("utf-8")
     print("annotation",r)
     annotations = json.loads(r)
     err = out.stderr.decode("utf-8")
     if err.strip():
-        print("Error extracting annotations from the report:", err)
+        print("Error getting report annotations:", err)
         sys.exit(1)
 
     print("category:", category)
