@@ -50,7 +50,7 @@ def verify_user(directory, username, category, organization, chart):
         write_error_log(directory, msg)
         sys.exit(1)
 
-def check_owners_file_against_directory_structure(username, category, organization, chart):
+def check_owners_file_against_directory_structure(directory,username, category, organization, chart):
     data = open(os.path.join("charts", category, organization, chart, "OWNERS")).read()
     out = yaml.load(data, Loader=Loader)
     vendor_label = out["vendor"]["label"]
@@ -295,7 +295,7 @@ def main():
     os.makedirs(args.directory, exist_ok=True)
     category, organization, chart, version = get_modified_charts(args.directory, args.api_url)
     verify_user(args.directory, args.username, category, organization, chart)
-    check_owners_file_against_directory_structure(args.username, category, organization, chart)
+    check_owners_file_against_directory_structure(args.directory, args.username, category, organization, chart)
     submitted_report_path = os.path.join("charts", category, organization, chart, version, "report.yaml")
     generate_verify_report(args.directory, category, organization, chart, version)
     if os.path.exists(submitted_report_path):
