@@ -1,11 +1,11 @@
-apiVersion: v2
+apiVersion: v1
 appVersion: 1.16.0
 description: A Helm chart for Awesomeness
 icon: https://www.example.com/chart-icon.png
 kubeVersion: 1.20.0
 name: acme
 type: application
-version: 0.2.0
+version: 0.1.0
 annotations:
   helm-chart.openshift.io/provider: acme
   helm-chart.openshift.io/name: get your awesomeness here
