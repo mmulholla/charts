@@ -229,7 +229,6 @@ def check_report_success(directory, report_path, version):
     if err.strip():
         msg = f"[ERROR] Error analysing the report: {err}"
         write_error_log(directory, msg)
-        sys.exit(1)
 
     failed = report["failed"]
     passed = report["passed"]
