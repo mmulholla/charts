@@ -2,7 +2,7 @@ chart:
   name: came
   shortDescription: Martin's acme
 users:
-- githubUsername: mmulholland
+- githubUsername: mmulholla
 vendor:
   label: martina
   name: martina
