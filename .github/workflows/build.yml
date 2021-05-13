@@ -107,7 +107,7 @@ jobs:
         id: get-date
         if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
         run: |
-          echo "report_exists ${{steps.sanity_check_pr_content.report_exists }}"
+          echo ${{steps.sanity_check_pr_content.report_exists }}
           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
