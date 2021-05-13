@@ -147,8 +147,8 @@ jobs:
           ../ve1/bin/chart-pr-review --directory=../pr --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
           cd ..
 
-      - name: 'Verify PR - generate report'
-          id: verify_pr_generate_report
+      - name: 'Verify PR - existing report'
+          id: verify_pr_existing_report
           if: steps.sanity_check_pr_content.report_exists == 'true'
         run: |
           gpg --version
