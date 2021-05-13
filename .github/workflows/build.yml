@@ -105,26 +105,27 @@ jobs:
 
       - name: Get Date
         id: get-date
-        if: steps.sanity_check_pr_content.report_exists != 'true'
+        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
         run: |
+          echo "report_exists ${{steps.sanity_check_pr_content.report_exists }}"
           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
       - uses: actions/cache@v2
-        if: steps.sanity_check_pr_content.report_exists != 'true'
+        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
         id: cache
         with:
           path: oc
           key: ${{ steps.get-date.outputs.date }}
 
       - name: Install oc
-        if: steps.sanity_check_pr_content.report_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
+        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }} && steps.cache.outputs.cache-hit != 'true'
         run: |
           curl -sLO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar zxvf openshift-client-linux.tar.gz oc
 
       - name: Get Repository
-        if: steps.sanity_check_pr_content.report_exists != 'true'
+        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
         id: get-repository
         run: |
           REPO=$(echo ${{ github.repository }} | tr '\/' '-')

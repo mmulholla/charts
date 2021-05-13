@@ -21,13 +21,12 @@ def ensure_only_chart_is_modified(api_url):
     reportpattern = re.compile(r"charts/(\w+)/([\w-]+)/([\w-]+)/([\w\.]+)/report.yaml")
     count = 0
     for f in r.json():
-        print("[INFO] file found:",f["filename"])
         if not pattern.match(f["filename"]):
             print("PR should only modify chart related files")
             sys.exit(1)
         elif reportpattern.match(f["filename"]):
             print("[INFO] Report found")
-            print(f"::set-output name=report_exists::true")
+            print("::set-output name=report_exists::true")
 
 def main():
     parser = argparse.ArgumentParser()
