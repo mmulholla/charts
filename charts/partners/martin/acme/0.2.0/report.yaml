@@ -1,0 +1,80 @@
+apiversion: v1
+kind: verify-report
+metadata:
+    tool:
+        verifier-version: 1.0.0
+        chart-uri: /charts/src
+        digest: sha256:5d6d0b58bb40fc69a2928b71cb096436d53e839491dc1577685d3ced4aa1e86a
+        lastCertifiedTimestamp: "2021-05-13T21:32:25.890229+00:00"
+        certifiedOpenShiftVersions: N/A
+    chart:
+        name: acme
+        home: ""
+        sources: []
+        version: 0.2.0
+        description: A Helm chart for Awesomeness
+        keywords: []
+        maintainers: []
+        icon: https://www.example.com/chart-icon.png
+        apiversion: v2
+        condition: ""
+        tags: ""
+        appversion: 1.16.0
+        deprecated: false
+        annotations:
+            helm-charts.openshift.io/archs: all
+            helm-charts.openshift.io/name: get your awesomeness here 0.2.0
+            helm-charts.openshift.io/provider: acme
+            helm-charts.openshift.io/supportURL: http://acme-help-is-here.com/
+        kubeversion: 1.20.0
+        dependencies: []
+        type: application
+    overrides: ""
+results:
+  - check: chart-testing
+    type: Mandatory
+    outcome: PASS
+    reason: 'Error waiting for process: exit status 1'
+  - check: has-readme
+    type: Mandatory
+    outcome: PASS
+    reason: Chart has a README
+  - check: is-helm-v3
+    type: Mandatory
+    outcome: PASS
+    reason: API version is V2, used in Helm 3
+  - check: has-kubeversion
+    type: Mandatory
+    outcome: PASS
+    reason: Kubernetes version specified
+  - check: not-contains-crds
+    type: Mandatory
+    outcome: PASS
+    reason: Chart does not contain CRDs
+  - check: helm-lint
+    type: Mandatory
+    outcome: PASS
+    reason: Helm lint successful
+  - check: images-are-certified
+    type: Mandatory
+    outcome: PASS
+    reason: |-
+        Image is Red Hat certified : nginx:latest
+        Image is Red Hat certified : snyk/kubernetes-operator
+  - check: contains-test
+    type: Mandatory
+    outcome: PASS
+    reason: Chart test files exist
+  - check: contains-values
+    type: Mandatory
+    outcome: PASS
+    reason: Values file exist
+  - check: contains-values-schema
+    type: Mandatory
+    outcome: PASS
+    reason: Values schema file exist
+  - check: not-contain-csi-objects
+    type: Mandatory
+    outcome: PASS
+    reason: CSI objects do not exist
+
