@@ -18,4 +18,21 @@ entries:
     urls:
     - https://github.com/mmulholla/repo/releases/download/martin-acme-0.1.0/martin-acme-0.1.0.tgz
     version: 0.1.0
-generated: '2021-05-13T21:14:04.572765+00:00'
+  - annotations:
+      charts.openshift.io/certifiedOpenShiftVersions: N/A
+      charts.openshift.io/digest: sha256:5d6d0b58bb40fc69a2928b71cb096436d53e839491dc1577685d3ced4aa1e86a
+      charts.openshift.io/lastCertifiedTimestamp: '2021-05-13T21:32:25.890229+00:00'
+      charts.openshift.io/provider: martin
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2021-05-13T21:35:13.827418+00:00'
+    apiVersion: v2
+    appVersion: 1.16.0
+    description: A Helm chart for Awesomeness
+    icon: https://www.example.com/chart-icon.png
+    kubeVersion: 1.20.0
+    name: acme
+    type: application
+    urls:
+    - https://github.com/mmulholla/repo/releases/download/martin-acme-0.2.0/martin-acme-0.2.0.tgz
+    version: 0.2.0
+generated: '2021-05-13T21:35:13.827418+00:00'
