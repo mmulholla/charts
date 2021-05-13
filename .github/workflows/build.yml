@@ -25,6 +25,7 @@ jobs:
           cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
           cd scripts && ../ve1/bin/python3 setup.py install && cd ..
           ./ve1/bin/sanity-check-pr --api-url=${{ github.event.pull_request._links.self.href }}
+          echo "::set-output name=report_exists::true"
 
       - uses: actions/github-script@v3
         if: ${{ steps.sanity_check_pr_content.outcome == 'success'}}
@@ -107,7 +108,7 @@ jobs:
         id: get-date
         if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
         run: |
-          echo ${{steps.sanity_check_pr_content.report_exists }}
+          echo ${{ steps.sanity_check_pr_content.report_exists }}
           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
