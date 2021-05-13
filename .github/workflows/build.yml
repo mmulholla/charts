@@ -118,7 +118,7 @@ jobs:
           key: ${{ steps.get-date.outputs.date }}
 
       - name: Install oc
-        if: steps.sanity_check_pr_content.report_exists != 'true' || steps.cache.outputs.cache-hit != 'true'
+        if: steps.sanity_check_pr_content.report_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
         run: |
           curl -sLO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar zxvf openshift-client-linux.tar.gz oc
@@ -131,8 +131,9 @@ jobs:
           echo "::set-output name=repository::${REPO}"
         shell: bash
 
-      - name: 'Verify PR'
-        id: verify_pr
+      - name: 'Verify PR - generate report'
+        id: verify_pr_generate_report
+        if: steps.sanity_check_pr_content.report_exists != 'true'
         env:
           KUBECONFIG: /tmp/ci-kubeconfig
         run: |
@@ -146,8 +147,19 @@ jobs:
           ../ve1/bin/chart-pr-review --directory=../pr --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
           cd ..
 
+      - name: 'Verify PR - generate report'
+          id: verify_pr_generate_report
+          if: steps.sanity_check_pr_content.report_exists == 'true'
+        run: |
+          gpg --version
+          docker pull quay.io/redhat-certification/chart-verifier:latest
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          cd pr-branch
+          ../ve1/bin/chart-pr-review --directory=../pr --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
+          cd ..
+
       - name: Delete Namespace
-        if: always()
+        if: always() && steps.sanity_check_pr_content.report_exists != 'true'
         env:
           KUBECONFIG: /tmp/ci-kubeconfig
         run: |

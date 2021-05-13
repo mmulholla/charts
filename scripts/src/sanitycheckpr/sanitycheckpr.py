@@ -24,7 +24,7 @@ def ensure_only_chart_is_modified(api_url):
         if not pattern.match(f["filename"]):
             print("PR should only modify chart related files")
             sys.exit(1)
-        elif f == "/chart/report.yaml"
+        elif f == "/chart/report.yaml":
             print("[INFO] Report found")
             print(f"::set-output name=report_exists::true")
 
