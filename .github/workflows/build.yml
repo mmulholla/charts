@@ -25,7 +25,6 @@ jobs:
           cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
           cd scripts && ../ve1/bin/python3 setup.py install && cd ..
           ./ve1/bin/sanity-check-pr --api-url=${{ github.event.pull_request._links.self.href }}
-          echo "::set-output name=report_exists::true"
 
       - uses: actions/github-script@v3
         if: ${{ steps.sanity_check_pr_content.outcome == 'success'}}
@@ -106,27 +105,27 @@ jobs:
 
       - name: Get Date
         id: get-date
-        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
+        if: ${{ steps.sanity_check_pr_content.outputs.report-exists != 'true' }}
         run: |
-          echo ${{ steps.sanity_check_pr_content.report_exists }}
+          echo ${{ steps.sanity_check_pr_content.outputs.report-exists }}
           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
       - uses: actions/cache@v2
-        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
+        if: ${{ steps.sanity_check_pr_content.outputs.report_exists != 'true' }}
         id: cache
         with:
           path: oc
           key: ${{ steps.get-date.outputs.date }}
 
       - name: Install oc
-        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }} && steps.cache.outputs.cache-hit != 'true'
+        if: ${{ steps.sanity_check_pr_content.outputs.report_exists != 'true' }} && steps.cache.outputs.cache-hit != 'true'
         run: |
           curl -sLO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar zxvf openshift-client-linux.tar.gz oc
 
       - name: Get Repository
-        if: ${{ steps.sanity_check_pr_content.report_exists != 'true' }}
+        if: ${{ steps.sanity_check_pr_content.outputs.report_exists != 'true' }}
         id: get-repository
         run: |
           REPO=$(echo ${{ github.repository }} | tr '\/' '-')
@@ -135,7 +134,7 @@ jobs:
 
       - name: 'Verify PR - generate report'
         id: verify_pr_generate_report
-        if: steps.sanity_check_pr_content.report_exists != 'true'
+        if: steps.sanity_check_pr_content.outputs.report_exists != 'true'
         env:
           KUBECONFIG: /tmp/ci-kubeconfig
         run: |
@@ -151,7 +150,7 @@ jobs:
 
       - name: 'Verify PR - existing report'
         id: verify_pr_existing_report
-        if: steps.sanity_check_pr_content.report_exists == 'true'
+        if: steps.sanity_check_pr_content.outputs.report_exists == 'true'
         run: |
           gpg --version
           docker pull quay.io/redhat-certification/chart-verifier:latest
@@ -161,7 +160,7 @@ jobs:
           cd ..
 
       - name: Delete Namespace
-        if: always() && steps.sanity_check_pr_content.report_exists != 'true'
+        if: always() && steps.sanity_check_pr_content.outputs.report_exists != 'true'
         env:
           KUBECONFIG: /tmp/ci-kubeconfig
         run: |

@@ -26,7 +26,7 @@ def ensure_only_chart_is_modified(api_url):
             sys.exit(1)
         elif reportpattern.match(f["filename"]):
             print("[INFO] Report found")
-            print("::set-output name=report_exists::true")
+            print("::set-output name=report-exists::true")
 
 def main():
     parser = argparse.ArgumentParser()
