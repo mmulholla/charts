@@ -148,8 +148,8 @@ jobs:
           cd ..
 
       - name: 'Verify PR - existing report'
-          id: verify_pr_existing_report
-          if: steps.sanity_check_pr_content.report_exists == 'true'
+        id: verify_pr_existing_report
+        if: steps.sanity_check_pr_content.report_exists == 'true'
         run: |
           gpg --version
           docker pull quay.io/redhat-certification/chart-verifier:latest
