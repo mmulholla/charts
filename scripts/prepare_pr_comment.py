@@ -36,7 +36,7 @@ def prepare_success_comment(issue_number, vendor_label, chart_name):
 
 def prepare_sanity_failure_comment(issue_number, vendor_label, chart_name):
     msg = f"Thank you for submitting PR #{issue_number} for Helm Chart Certification!\n\n"
-    msg += f"An error was found with the Pull Request: \n
+    msg += f"An error was found with the Pull Request: \n"
     msg += f"- Please ensure that only chart related files are included in the PullRequest.\n\n"
     msg += f'/metadata {{"vendor_label": "{vendor_label}", "chart_name": "{chart_name}"}}\n\n'
     return msg
