@@ -154,7 +154,7 @@ jobs:
       - name: 'Prepare PR comment'
         if: always()
         run: |
-          python3 scripts/prepare_pr_comment.py ${{ steps.sanity_check_pr_content.conclusion }} ${{ steps.verify_pr.conclusion }} ${{ github.repository }}
+          python3 scripts/prepare_pr_comment.py ${{ steps.sanity_check_pr_content.outcome }} ${{ steps.verify_pr.conclusion }} ${{ github.repository }}
 
       - name: 'Comment on PR'
         if: always()
