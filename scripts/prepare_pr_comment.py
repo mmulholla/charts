@@ -30,6 +30,7 @@ For support, connect with our [Technology Partner Success Desk](https://redhat-c
 
 def prepare_success_comment(issue_number, vendor_label, chart_name):
     msg = f"Thank you for the PR #{issue_number}!\n\n"
+    msg = f"Congratulations! All checks have passed.\n\n"
     msg += f'/metadata {{"vendor_label": "{vendor_label}", "chart_name": "{chart_name}"}}\n\n'
     return msg
 
