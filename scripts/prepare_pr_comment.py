@@ -3,16 +3,16 @@ import sys
 
 def prepare_failure_comment(repository, issue_number, vendor_label, chart_name):
     msg = f"""\
-Thank you for the pull request #{issue_number}!
+Thank you for submitting pull request #{issue_number} for Helm Chart Certification!
 
-There are few errors while building and verifying your pull request.
+There were one or more errors while building and verifying your pull request.
 To see the console output with the error messages, click the "Details"
 link next to "Build and Verify" job status towards the end of this page.
 """
     if os.path.exists("./pr/errors"):
         errors = open("./pr/errors").read()
         msg += f"""
-[ERROR] The submitted chart has failed verification. Reason(s):
+[ERROR] The submitted chart has failed certification. Reason(s):
 
 {errors}
 
@@ -29,8 +29,8 @@ For support, connect with our [Technology Partner Success Desk](https://redhat-c
     return msg
 
 def prepare_success_comment(issue_number, vendor_label, chart_name):
-    msg = f"Thank you for the PR #{issue_number}!\n\n"
-    msg = f"Congratulations! All checks have passed.\n\n"
+    msg = f"Thank you for submitting PR #{issue_number} for Helm Chart Certification!\n\n"
+    msg += f"Congratulations! Your chart has been certified and will be published shortly.\n\n"
     msg += f'/metadata {{"vendor_label": "{vendor_label}", "chart_name": "{chart_name}"}}\n\n'
     return msg
 
