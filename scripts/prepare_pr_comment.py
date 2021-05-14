@@ -49,7 +49,7 @@ def main():
     vendor_label = open("./pr/vendor").read().strip()
     chart_name = open("./pr/chart").read().strip()
     if sanity_result == "failure":
-        msg prepare_sanity_failure_comment(issue_number, vendor_label, chart_name)
+        msg = prepare_sanity_failure_comment(issue_number, vendor_label, chart_name)
     elif verify_result == "failure":
         msg = prepare_failure_comment(repository, issue_number, vendor_label, chart_name)
     else:
