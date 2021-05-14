@@ -34,13 +34,23 @@ def prepare_success_comment(issue_number, vendor_label, chart_name):
     msg += f'/metadata {{"vendor_label": "{vendor_label}", "chart_name": "{chart_name}"}}\n\n'
     return msg
 
+def prepare_sanity_failure_comment(issue_number, vendor_label, chart_name):
+    msg = f"Thank you for submitting PR #{issue_number} for Helm Chart Certification!\n\n"
+    msg += f"An error was found with the Pull Request: \n
+    msg += f"- Please ensure that only chart related files are included in the PullRequest.\n\n"
+    msg += f'/metadata {{"vendor_label": "{vendor_label}", "chart_name": "{chart_name}"}}\n\n'
+    return msg
+
 def main():
-    result = sys.argv[1]
-    repository = sys.argv[2]
+    sanity_result = sys.argv[1]
+    verify_result = sys.argv[2]
+    repository = sys.argv[3]
     issue_number = open("./pr/NR").read().strip()
     vendor_label = open("./pr/vendor").read().strip()
     chart_name = open("./pr/chart").read().strip()
-    if result == "failure":
+    if sanity_result == "failure":
+        msg prepare_sanity_failure_comment(issue_number, vendor_label, chart_name)
+    elif verify_result == "failure":
         msg = prepare_failure_comment(repository, issue_number, vendor_label, chart_name)
     else:
         msg = prepare_success_comment(issue_number, vendor_label, chart_name)
