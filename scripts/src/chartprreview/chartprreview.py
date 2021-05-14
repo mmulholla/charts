@@ -234,7 +234,7 @@ def check_report_success(directory, report_path, version):
     passed = report["passed"]
     if failed > 0:
         msgs = []
-        msgs.append("[ERROR] Report has failed:")
+        msgs.append("[ERROR] Chart verifier report includes failures:")
         msgs.append(f"  Number of checks passed: {passed}")
         msgs.append(f"  Number of checks failed: {failed}")
         msgs.append("  Error message(s):")
