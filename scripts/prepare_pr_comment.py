@@ -7,7 +7,7 @@ Thank you for submitting pull request #{issue_number} for Helm Chart Certificati
 
 There were one or more errors while building and verifying your pull request.
 To see the console output with the error messages, click the "Details"
-link next to "Build and Verify" job status towards the end of this page.
+link next to "CI / Chart Certification" job status towards the end of this page.
 """
     if os.path.exists("./pr/errors"):
         errors = open("./pr/errors").read()
