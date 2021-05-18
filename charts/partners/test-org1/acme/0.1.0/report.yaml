@@ -6,7 +6,7 @@ metadata:
         chart-uri: /charts/src
         digest: sha256:3d726729e0f72b364c5dd7f535ac44e356ca6b2c471e1b8011b902b943596a55
         lastCertifiedTimestamp: "2021-05-18T21:27:31.834545+00:00"
-        certifiedOpenShiftVersions: N/A
+        certifiedOpenShiftVersions: 4.7.8
     chart:
         name: acme
         home: ""
