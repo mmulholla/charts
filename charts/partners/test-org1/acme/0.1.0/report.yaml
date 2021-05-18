@@ -1,0 +1,80 @@
+apiversion: v1
+kind: verify-report
+metadata:
+    tool:
+        verifier-version: 1.0.0
+        chart-uri: /charts/src
+        digest: sha256:96a8f1df3430766b75f80c712a28570abc7e7fd65e05ee6647e062e79a7c89ef
+        lastCertifiedTimestamp: "2021-05-13T16:11:47.133116+00:00"
+        certifiedOpenShiftVersions: N/A
+    chart:
+        name: awesome
+        home: ""
+        sources: []
+        version: 0.1.0
+        description: A Helm chart for Awesomeness
+        keywords: []
+        maintainers: []
+        icon: https://www.example.com/chart-icon.png
+        apiversion: v2
+        condition: ""
+        tags: ""
+        appversion: 1.16.0
+        deprecated: false
+        annotations:
+            charts.openshift.io/archs: all
+            charts.openshift.io/name: get your awesomeness here
+            charts.openshift.io/provider: acme
+            charts.openshift.io/supportURL: http://acme-help-is-here.com/
+        kubeversion: 1.20.0
+        dependencies: []
+        type: application
+    overrides: ""
+results:
+  - check: not-contain-csi-objects
+    type: Mandatory
+    outcome: PASS
+    reason: CSI objects do not exist
+  - check: is-helm-v3
+    type: Mandatory
+    outcome: PASS
+    reason: API version is V2, used in Helm 3
+  - check: contains-test
+    type: Mandatory
+    outcome: PASS
+    reason: Chart test files exist
+  - check: contains-values
+    type: Mandatory
+    outcome: PASS
+    reason: Values file exist
+  - check: contains-values-schema
+    type: Mandatory
+    outcome: PASS
+    reason: Values schema file exist
+  - check: has-kubeversion
+    type: Mandatory
+    outcome: PASS
+    reason: Kubernetes version specified
+  - check: not-contains-crds
+    type: Mandatory
+    outcome: PASS
+    reason: Chart does not contain CRDs
+  - check: helm-lint
+    type: Mandatory
+    outcome: PASS
+    reason: Helm lint successful
+  - check: images-are-certified
+    type: Mandatory
+    outcome: PASS
+    reason: |-
+        Image is Red Hat certified : nginx:latest
+        Image is Red Hat certified : snyk/kubernetes-operator
+  - check: chart-testing
+    type: Mandatory
+    outcome: PASS
+    reason: 'Error waiting "for" process: exit status 1'
+  - check: has-readme
+    type: Mandatory
+    outcome: PASS
+    reason: Chart has a README
+
