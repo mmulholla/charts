@@ -5,7 +5,7 @@ metadata:
         verifier-version: 1.0.0
         chart-uri: https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-object-storage-plugin-2.1.2.tgz?raw=true
         digest: sha256:3cda4165a30e77372332c6da2fb81f33ddfd83e1b9294090063c90f712b49ca1
-        lastCertifiedTimestamp: "2021-06-22T05:12:28.803312+00:00"
+        lastCertifiedTimestamp: "2021-06-22T05:14:28.803312+00:00"
         certifiedOpenShiftVersions: 4.7.0
     chart:
         name: ibm-object-storage-plugin
