@@ -11,7 +11,7 @@ def ensure_pull_request_not_merged(api_url):
     for i in range(20):
         r = requests.get(api_url, headers=headers)
         if r.json()["merged"]:
-            merged = False
+            merged = True
             break
         time.sleep(10)
 
