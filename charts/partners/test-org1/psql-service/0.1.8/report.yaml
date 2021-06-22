@@ -6,9 +6,9 @@ metadata:
         profileName: 'default-profile : open /Users/martinmulholland/helm/chart-verifier/pkg/chartverifier/profiles/profile-1.0.0.yaml:
             no such file or directory'
         chart-uri: src
-        digest: sha256:53b3d2ed58561ff6468040321d252d9a83ca7ad4cfc6c70275f6b51904ef0980
-        lastCertifiedTimestamp: "2021-06-22T17:20:13.196144-04:00"
-        certifiedOpenShiftVersions: 4.7.8
+        digest: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
+        lastCertifiedTimestamp: "2021-06-22T17:28:30.450582-04:00"
+        certifiedOpenShiftVersions: N/A
     chart:
         name: psql-service
         home: ""
@@ -33,42 +33,14 @@ metadata:
         type: application
     chart-overrides: ""
 results:
-  - check: not-contains-crds
-    type: Mandatory
-    outcome: PASS
-    reason: Chart does not contain CRDs
-  - check: images-are-certified
-    type: Mandatory
-    outcome: PASS
-    reason: 'Image is Red Hat certified : registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest'
-  - check: is-helm-v3
-    type: Mandatory
-    outcome: PASS
-    reason: API version is V2, used in Helm 3
-  - check: contains-values
-    type: Mandatory
-    outcome: PASS
-    reason: Values file exist
-  - check: contains-values-schema
-    type: Mandatory
-    outcome: PASS
-    reason: Values schema file exist
   - check: has-kubeversion
     type: Mandatory
     outcome: PASS
     reason: Kubernetes version specified
-  - check: chart-testing
+  - check: not-contains-crds
     type: Mandatory
     outcome: PASS
-    reason: It passed
-  - check: has-readme
-    type: Mandatory
-    outcome: PASS
-    reason: Chart has a README
-  - check: contains-test
-    type: Mandatory
-    outcome: PASS
-    reason: Chart test files exist
+    reason: Chart does not contain CRDs
   - check: helm-lint
     type: Mandatory
     outcome: PASS
@@ -77,4 +49,35 @@ results:
     type: Mandatory
     outcome: PASS
     reason: CSI objects do not exist
+  - check: images-are-certified
+    type: Mandatory
+    outcome: PASS
+    reason: 'Image is Red Hat certified : registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest'
+  - check: contains-values
+    type: Mandatory
+    outcome: PASS
+    reason: Values file exist
+  - check: is-helm-v3
+    type: Mandatory
+    outcome: PASS
+    reason: API version is V2, used in Helm 3
+  - check: contains-test
+    type: Mandatory
+    outcome: PASS
+    reason: Chart test files exist
+  - check: contains-values-schema
+    type: Mandatory
+    outcome: PASS
+    reason: Values schema file exist
+  - check: chart-testing
+    type: Mandatory
+    outcome: FAIL
+    reason: |-
+        Error running process: executing helm with args "install psql-service-hbzywjhf0h /Users/martinmulholland/Library/Caches/chart-verifier/src/psql-service --namespace default --wait --values /var/folders/19/zzj4wrnj1_g1wdtt_zn61_tm0000gn/T/chart-testing-728872324/values.yaml": exit status 1
+        ---
+        Error: Kubernetes cluster unreachable: Get "https://api.crc.testing:6443/version?timeout=32s": dial tcp [::1]:6443: connect: connection refused
+  - check: has-readme
+    type: Mandatory
+    outcome: PASS
+    reason: Chart has a README
 
