@@ -5,6 +5,7 @@ publicPgpKey: null
 users:
 - githubUsername: morstad
 - githubUsername: rondamus
+- githubUsername: mmulholla
 vendor:
   label: ibm
   name: IBM
