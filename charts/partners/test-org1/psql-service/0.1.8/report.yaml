@@ -8,7 +8,7 @@ metadata:
         chart-uri: src
         digest: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
         lastCertifiedTimestamp: "2021-06-22T17:28:30.450582-04:00"
-        certifiedOpenShiftVersions: N/A
+        certifiedOpenShiftVersions: 4.7.8
     chart:
         name: psql-service
         home: ""
@@ -71,11 +71,8 @@ results:
     reason: Values schema file exist
   - check: chart-testing
     type: Mandatory
-    outcome: FAIL
-    reason: |-
-        Error running process: executing helm with args "install psql-service-hbzywjhf0h /Users/martinmulholland/Library/Caches/chart-verifier/src/psql-service --namespace default --wait --values /var/folders/19/zzj4wrnj1_g1wdtt_zn61_tm0000gn/T/chart-testing-728872324/values.yaml": exit status 1
-        ---
-        Error: Kubernetes cluster unreachable: Get "https://api.crc.testing:6443/version?timeout=32s": dial tcp [::1]:6443: connect: connection refused
+    outcome: PASS
+    reason: passy
   - check: has-readme
     type: Mandatory
     outcome: PASS
