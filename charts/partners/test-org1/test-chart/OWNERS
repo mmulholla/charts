@@ -4,7 +4,7 @@ chart:
   shortDescription: Lorem ipsum
 publicPgpKey: 
 users:
-  - githubUsername: mmulholl
+  - githubUsername: mmulholla
 vendor:
   label: test-org1
   name: Balabit
