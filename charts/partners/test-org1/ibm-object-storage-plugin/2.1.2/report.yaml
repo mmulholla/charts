@@ -7,7 +7,7 @@ metadata:
         profile:
             VendorType: partner
             version: v1.0
-        chart-uri: ibm-oms-pro-prod-6.0.1.tgz
+        chart-uri: https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-object-storage-plugin-2.1.2.tgz?raw=true
         digest: sha256:e7cacf93d397b58c64f9c113cc0671e6e920022bf4227cab291e18c6e3827954
         digests:
             chart: sha256:e7cacf93d397b58c64f9c113cc0671e6e920022bf4227cab291e18c6e3827954
