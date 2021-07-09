@@ -14,7 +14,7 @@ metadata:
             package: 467896f2c66484751704397c19e29cfdbcada30a8f9ab3c0168ad3db34821099
         lastCertifiedTimestamp: "2021-07-09T13:05:40.77301-04:00"
         certifiedOpenShiftVersions: N/A
-    chart: |
+    chart: 
         apiVersion: v2
         appVersion: 10.0.0
         dependencies:
