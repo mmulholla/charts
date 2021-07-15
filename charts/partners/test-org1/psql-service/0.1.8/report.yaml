@@ -9,7 +9,7 @@ metadata:
         chart-uri: src
         digest: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
         digests:
-            chart: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f2
+            chart: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
         lastCertifiedTimestamp: "2021-07-15T14:53:28.019099-04:00"
         certifiedOpenShiftVersions: N/A
     chart:
