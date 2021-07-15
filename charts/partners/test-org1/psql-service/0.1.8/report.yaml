@@ -9,7 +9,7 @@ metadata:
         chart-uri: src
         digest: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
         digests:
-            chart: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f1
+            chart: sha256:f114b1dc9ba92213525c0d848e2f735795e23c6a18cb1132e476d3a48826f7f2
         lastCertifiedTimestamp: "2021-07-15T14:53:28.019099-04:00"
         certifiedOpenShiftVersions: N/A
     chart:
@@ -70,11 +70,8 @@ results:
     reason: Kubernetes version specified
   - check: v1.0/chart-testing
     type: Mandatory
-    outcome: FAIL
-    reason: |-
-        Error running process: executing helm with args "install psql-service-y1l5ubzbo1 /Users/martinmulholland/Library/Caches/chart-verifier/src/psql-service --namespace default --wait --values /var/folders/19/zzj4wrnj1_g1wdtt_zn61_tm0000gn/T/chart-testing-221502687/values.yaml": exit status 1
-        ---
-        Error: Kubernetes cluster unreachable: Get "https://api.crc.testing:6443/version?timeout=32s": dial tcp 127.0.0.1:6443: connect: connection refused
+    outcome: PASS
+    reason: Chart testing passed
   - check: v1.0/contains-values
     type: Mandatory
     outcome: PASS
