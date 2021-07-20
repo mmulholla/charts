@@ -31,6 +31,7 @@ def ensure_only_chart_is_modified(api_url, repository, branch):
     for f in r.json():
         filename = f["filename"]
         match = pattern.match(filename)
+        print(f"check file {filename} : {match}")
         if not match:
             msg = f"[ERROR] PR should only modify chart related files: {filename}"
             print(msg)
