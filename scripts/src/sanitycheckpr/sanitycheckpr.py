@@ -27,7 +27,7 @@ def ensure_only_chart_is_modified(api_url, repository, branch):
     pattern = re.compile(r"charts/"+TYPE_MATCH_EXPRESSION+"/([\w-]+)/([\w-]+)/([\w\.-]+)/.*")
     reportpattern = re.compile(r"charts/"+TYPE_MATCH_EXPRESSION+"/([\w-]+)/([\w-]+)/([\w\.-]+)/report.yaml")
     page_number = 1
-    max_page_size,page_size = 100
+    max_page_size,page_size = 100,100
 
     while page_size == max_page_size:
 
