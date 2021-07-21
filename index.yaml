@@ -51,4 +51,22 @@ entries:
     urls:
     - https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-oms-ent-prod-6.0.1.tgz?raw=true
     version: 6.0.1
-generated: '2021-07-21T15:36:36.121268+00:00'
+  test-org1-psql-service:
+  - annotations:
+      charts.openshift.io/certifiedOpenShiftVersions: '4.7'
+      charts.openshift.io/digest: sha256:7f2a63f5b653438b4dfbc83ccfac6ca2c58a49c9b25c216fc5491274442b617a
+      charts.openshift.io/lastCertifiedTimestamp: '2021-07-07T15:53:41.199754-04:00'
+      charts.openshift.io/provider: Balabit
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2021-07-21T15:56:57.390413+00:00'
+    apiVersion: v2
+    appVersion: 10.0.0
+    description: A Helm chart for a RedHat Certified PSQL
+    digest: 4b47f47d908e2fd46be360c9b5bab716d76f687928e0d7b6b29f76ff1169b0be
+    kubeVersion: 1.20.0
+    name: psql-service
+    type: application
+    urls:
+    - https://github.com/mmulholla/repo/releases/download/test-org1-psql-service-0.1.10/test-org1-psql-service-0.1.10.tgz
+    version: 0.1.10
+generated: '2021-07-21T15:56:57.390413+00:00'
