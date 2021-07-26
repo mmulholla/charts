@@ -1,6 +1,6 @@
 import re
 import argparse
-import sys
+import os
 import requests
 import json
 import yaml
@@ -17,12 +17,12 @@ def check_if_ci_only_is_modified(api_url):
     pattern_workflow = re.compile(r".github/workflows/.*")
     pattern_script = re.compile(r"scripts/.*")
     pattern_test = re.compile(r"tests/.*")
-    pattern_test_config = re.compile(r"tests/test-config.yaml")
     page_number = 1
     max_page_size,page_size = 100,100
 
     workflow_found = False
     other_found = False
+    test_config_path = ""
 
     while (page_size == max_page_size) & (not other_found):
 
@@ -39,9 +39,6 @@ def check_if_ci_only_is_modified(api_url):
                 workflow_found = True
             elif pattern_script.match(filename):
                 workflow_found = True
-            elif pattern_test_config.match(filename):
-                workflow_found = True
-                test_config_path = filename
             elif pattern_test.match(filename):
                 workflow_found = True
             else:
@@ -50,29 +47,22 @@ def check_if_ci_only_is_modified(api_url):
 
     tests = "none"
     if not other_found:
-        if test_config_path:
-            test_config_data = open(test_config_path).read()
-            test_config = json.loads(test_config_data)
-            if "vendor-type" in test_config:
-                vendor_type = test_config["vendor-type"]
-                print(f"::set-output name=vendor_type::{vendor_type}")
-            tests = "manual"
-        else:
-            tests = "auto"
+        tests = "auto"
     return tests
 
 
 
 def verify_user(username):
     print(f"[INFO] Verify user. {username}")
-    owners_path = os.path.join("charts", "OWNERS")
+    owners_path = "OWNERS"
     if not os.path.exists(owners_path):
         print(f"[ERROR] {owners_path} file does not exist.")
     else:
         data = open(owners_path).read()
         out = yaml.load(data, Loader=Loader)
-        if username in out['approvers']:
-           return True
+        if username in out["approvers"]:
+            print(f"[INFO] {username} verified")
+            return True
         else:
            print(f"[ERROR] {username} cannot run tests")
     return False
@@ -87,8 +77,8 @@ def main():
     args = parser.parse_args()
     if verify_user(args.username):
         test_type = check_if_ci_only_is_modified(args.api_url)
-        print(f"::set-output name=test_type::{test_type}")
-
+        print(f"[INFO] test type: {test_type}")
+        print(f"::set-output name=test-type::{test_type}")
 
 if __name__ == "__main__":
     main()
