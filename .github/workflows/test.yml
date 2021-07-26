@@ -1,7 +1,7 @@
-name: Test
+name: Test Workflow
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened, edited, labeled]
 
 jobs:
@@ -33,9 +33,9 @@ jobs:
           ./ve1/bin/check-pr-for-ci --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
 
 
-      - name: Test CI Workflow
-        id: test_ci_workflow
-        if: steps.check_pr_content.test_type = 'auto'
+      - name: Auto Test CI Workflow
+        id: auto_test_ci_workflow
+        if: ${{ steps.check_pr_content.test_type == 'auto'}}
         env:
           CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
           TEST_REPO: ${{ secrets.TEST_REPO }}
@@ -47,9 +47,9 @@ jobs:
           echo "../ve1/bin/pytest tests/ --log-cli-level=INFO --ignore=tests/functional/test_submitted_charts.py"
           cd ..
 
-      - name: Test CI Workflow
-        id: test_ci_workflow
-        if: steps.check_pr_content.test_type = 'manual'
+      - name: Manual Test CI Workflow
+        id: manual_test_ci_workflow
+        if: ${{ steps.check_pr_content.test_type == 'manual'}}
         env:
           CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
           TEST_REPO: ${{ secrets.TEST_REPO }}
