@@ -1,0 +1,63 @@
+name: Test
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited, labeled]
+
+jobs:
+  workflow-test:
+    name: Workflow Test
+    runs-on: ubuntu-20.04
+    env:
+      VERIFIER_IMAGE: quay.io/redhat-certification/chart-verifier:latest
+    if: |
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' || github.event.label.name == 'run-test')
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          path: "pr-branch"
+
+      - name: Check PR Content
+        id: check_pr_content
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          python3 -m venv ve1
+          cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
+          cd scripts && ../ve1/bin/python3 setup.py install && cd ..
+          ./ve1/bin/check-pr-for-ci --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
+
+
+      - name: Test CI Workflow
+        id: test_ci_workflow
+        if: steps.check_pr_content.test_type = 'auto'
+        env:
+          CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
+          TEST_REPO: ${{ secrets.TEST_REPO }}
+          FORK_REPO: ${{ secrets.FORK_REPO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_URL: = ${{ github.event.pull_request._links.self.href }}
+        run: |
+          cd pr-branch
+          echo "../ve1/bin/pytest tests/ --log-cli-level=INFO --ignore=tests/functional/test_submitted_charts.py"
+          cd ..
+
+      - name: Test CI Workflow
+        id: test_ci_workflow
+        if: steps.check_pr_content.test_type = 'manual'
+        env:
+          CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
+          TEST_REPO: ${{ secrets.TEST_REPO }}
+          FORK_REPO: ${{ secrets.FORK_REPO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_URL: = ${{ github.event.pull_request._links.self.href }}
+          VENDOR_TYPE: = ${{ steps.check_pr_content.vendor_type }}
+        run: |
+          cd pr-branch
+          echo "../ve1/bin/pytest tests/functional/test_submitted_charts.py --log-cli-level=INFO
+          cd ..
