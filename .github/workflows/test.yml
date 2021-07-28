@@ -45,8 +45,9 @@ jobs:
         id: check_request
         run: |
           # check if workflow testing should run.
-          echo "env.GITHUB_EVENT_NAME:" ${{ env.GITHUB_EVENT_NAME }}
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
           echo "github.event.name:" ${{ github.event.name }}
+          echo "GITHIB_ACTOR: $GITHIB_ACTOR "
           echo "github.actor:" ${{ github.actor }}
           if [ "${{ env.GITHUB_EVENT_NAME }}" == "pull_request" ]; then
               echo "[INFO] check if PR contains only workflow changes and user is authorized"
