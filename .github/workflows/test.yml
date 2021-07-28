@@ -40,12 +40,14 @@ jobs:
 
       - name: Run env
         run: env
-        
+
       - name: Check Request
         id: check_request
         run: |
           # check if workflow testing should run.
-          if [ "${{github.event.inputs.vendor-type}}" == "" ]; then
+          echo "env.GITHUB_EVENT_NAME: ${{ env.GITHUB_EVENT_NAME }}"
+          echo "github.event.name: ${{ github.event.name }}"
+          if [ "${{ env.GITHUB_EVENT_NAME }}" == "pull_request" ]; then
               echo "[INFO] check if PR contains only workflow changes and user is authorized"
               ve1/bin/check-pr-for-ci --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
           else
@@ -68,7 +70,7 @@ jobs:
           # Run the wokflow tests
           echo "[INFO] Vendor type ${{ env.TEST_VENDOR_TYPE }}"
           echo "[INFO] Notify ID ${{ env.TEST_NOTIFY_ID }}"
-          if [ "${{github.event.inputs.vendor-type}}" == "" ]; then
+          if [ "${{ env.GITHUB_EVENT_NAME }}" == "pull_request" ]; then
               echo "../ve1/bin/pytest tests/ --log-cli-level=INFO --ignore=tests/functional/test_submitted_charts.py"
           else
               echo "../ve1/bin/pytest tests/functional/test_submitted_charts.py --log-cli-level=INFO"
