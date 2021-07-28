@@ -13,7 +13,9 @@ on:
           description: 'Issue notification {OWNERS,none,<github id>}'
           required: true
           default: 'none'
-
+        reason:
+          description: 'Reason for running test to add to Issues'
+          required: false
 
 jobs:
   workflow-test:
@@ -46,10 +48,7 @@ jobs:
         run: |
           # check if workflow testing should run.
           echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
-          echo "github.event.name:" ${{ github.event.name }}
-          echo "GITHIB_ACTOR: $GITHUB_ACTOR "
-          echo "github.actor:" ${{ github.actor }}
-          if [ "${{ env.GITHUB_EVENT_NAME }}" == "pull_request" ]; then
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
               echo "[INFO] check if PR contains only workflow changes and user is authorized"
               ve1/bin/check-pr-for-ci --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
           else
@@ -68,12 +67,14 @@ jobs:
           API_URL: = ${{ github.event.pull_request._links.self.href }}
           TEST_VENDOR_TYPE: = ${{ github.event.inputs.vendor-type }}
           TEST_NOTIFY_ID: = ${{ github.event.inputs.notify-id }}
+          TEST_REASON: = ${{ github.event.inputs.reason }}
         run: |
           # Run the wokflow tests
-          echo "[INFO] Vendor type ${{ env.TEST_VENDOR_TYPE }}"
-          echo "[INFO] Notify ID ${{ env.TEST_NOTIFY_ID }}"
-          if [ "${{ env.GITHUB_EVENT_NAME }}" == "pull_request" ]; then
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
               echo "../ve1/bin/pytest tests/ --log-cli-level=INFO --ignore=tests/functional/test_submitted_charts.py"
           else
+              echo "[INFO] Vendor type ${{ env.TEST_VENDOR_TYPE }}"
+              echo "[INFO] Notify ID ${{ env.TEST_NOTIFY_ID }}"
+              echo "[INFO] Reason ${{ env.TEST_REASON }}"
               echo "../ve1/bin/pytest tests/functional/test_submitted_charts.py --log-cli-level=INFO"
           fi
