@@ -40,14 +40,11 @@ jobs:
           cd scripts && ../ve1/bin/pip3 install -r requirements.txt && cd ..
           cd scripts && ../ve1/bin/python3 setup.py install && cd ..
 
-      - name: Run env
-        run: env
-
       - name: Check Request
         id: check_request
         run: |
           # check if workflow testing should run.
-          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "Request type: $GITHUB_EVENT_NAME"
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
               echo "[INFO] check if PR contains only workflow changes and user is authorized"
               ve1/bin/check-pr-for-ci --verify-user=${{ github.event.pull_request.user.login }} --api-url=${{ github.event.pull_request._links.self.href }}
