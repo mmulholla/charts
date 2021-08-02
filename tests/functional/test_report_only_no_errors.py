@@ -71,7 +71,7 @@ vendor:
 
     test_repo = TEST_REPO
     repo = git.Repo()
-    current_branch = repo.active_branch.name
+    current_branch = repo.active_branch
     r = github_api(
         'get', f'repos/{test_repo}/branches', bot_token)
     branches = json.loads(r.text)
