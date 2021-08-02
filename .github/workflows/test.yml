@@ -2,7 +2,7 @@ name: Test Workflow
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited, labeled, workflow_dispatch]
+    types: [opened, synchronize, reopened, edited]
   workflow_dispatch:
       inputs:
         dry-run:
@@ -32,8 +32,10 @@ jobs:
 
     steps:
 
-      - name: Checkout
+      - name: Checkout PR
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.x Part 1
         uses: actions/setup-python@v2
