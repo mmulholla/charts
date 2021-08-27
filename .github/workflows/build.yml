@@ -141,7 +141,7 @@ jobs:
         run: |
           API_SERVER=$( echo -n ${{ secrets.API_SERVER }} | base64 -d)
           ./oc login --token=${{ secrets.CLUSTER_TOKEN }} --server=${API_SERVER}
-          ve1/bin/sa-for-chart-testing --delete chart-verifier-ci-${{ steps.get-repository.outputs.repository }}-${{ github.event.number }}
+          ve1/bin/sa-for-chart-testing --delete charts-${{ github.event.number }}
 
       - name: Save PR artifact
         if: always()
