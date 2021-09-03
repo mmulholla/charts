@@ -1,5 +1,30 @@
 apiVersion: v1
 entries:
+  infinispan-infinispan:
+  - annotations:
+      charts.openshift.io/certifiedOpenShiftVersions: N/A
+      charts.openshift.io/digest: sha256:b9ef516335b9052060483eb54e8fcae0cd935f7949216ed89316b9de61c282fe
+      charts.openshift.io/lastCertifiedTimestamp: '2021-09-03T16:01:24.076151+00:00'
+      charts.openshift.io/provider: Infinispan
+      charts.openshift.io/providerType: community
+      charts.openshift.io/submissionTimestamp: '2021-09-03T16:01:54.865518+00:00'
+    apiVersion: v2
+    appVersion: '12.1'
+    description: A Helm chart that lets you build and deploy Infinispan clusters.
+    digest: 1ac752349de1a1b42af68742a3cea078885df5bef168792960ad080cc1d27cfe
+    home: https://infinispan.org/
+    icon: https://design.jboss.org/infinispan/logo/final/PNG/infinispan_icon_rgb_lightbluewhite_256px.png
+    maintainers:
+    - name: Infinispan
+      url: https://infinispan.org/
+    name: infinispan
+    sources:
+    - https://github.com/infinispan/infinispan
+    - https://github.com/infinispan/infinispan-helm-charts
+    type: application
+    urls:
+    - https://github.com/mmulholla/repo/releases/download/infinispan-infinispan-0.1.0/infinispan-infinispan-0.1.0.tgz
+    version: 0.1.0
   test-org-psql-service:
   - annotations:
       charts.openshift.io/certifiedOpenShiftVersions: '4.7'
@@ -52,4 +77,4 @@ entries:
     urls:
     - https://github.com/mmulholla/repo/releases/download/test-org-psql-service-0.1.10/test-org-psql-service-0.1.10.tgz
     version: 0.1.10
-generated: '2021-09-03T15:22:07.861424+00:00'
+generated: '2021-09-03T16:01:54.865518+00:00'
