@@ -3,7 +3,7 @@ chart:
   shortDescription: This is the Infinispan chart
 publicPgpKey: null
 users:
-- githubUsername: ryanemerson
+- githubUsername: mmulholla
 vendor:
   label: infinispan
   name: Infinispan
