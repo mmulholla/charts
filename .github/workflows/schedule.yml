@@ -1,8 +1,8 @@
 name: Check Software Version
-on:
-  # Daily trigger to check updates
   schedule:
+  # Daily trigger to check updates
     - cron: "0 0 * * *"
+on:
   workflow_dispatch:
     inputs:
       # XXX: dry-run has two side effects:
