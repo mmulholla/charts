@@ -73,6 +73,7 @@ rules:
     verbs:
       - 'get'
       - 'create'
+      - 'delete'
   - apiGroups:
       - "admissionregistration.k8s.io"
     resources:
