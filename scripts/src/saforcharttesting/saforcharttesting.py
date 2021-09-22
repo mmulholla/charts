@@ -84,6 +84,7 @@ rules:
       - 'list'
       - 'watch'
       - 'patch'
+      - 'delete'
   - apiGroups:
       - "authentication.k8s.io"
     resources:
