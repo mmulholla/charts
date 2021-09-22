@@ -32,6 +32,37 @@ entries:
     urls:
     - https://github.com/mmulholla/charts/releases/download/hashicorp-vault-0.13.0/hashicorp-vault-0.13.0.tgz
     version: 0.13.0
+  - annotations:
+      charts.openshift.io/certifiedOpenShiftVersions: '4.7'
+      charts.openshift.io/digest: sha256:1d265a29ff69dc9765b5e19a9d10eabf038aee993ee2f506db2803814b1a6cb1
+      charts.openshift.io/lastCertifiedTimestamp: '2021-09-22T18:41:25.249367+00:00'
+      charts.openshift.io/provider: HashiCorp
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2021-09-22T18:41:41.898260+00:00'
+    apiVersion: v2
+    appVersion: 1.8.0
+    description: Official HashiCorp Vault Chart
+    digest: 91d11a711e274b27613c83449e6a01a5c0f67c514cedd8b753e066d9594c2008
+    home: https://www.vaultproject.io
+    icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+    keywords:
+    - vault
+    - security
+    - encryption
+    - secrets
+    - management
+    - automation
+    - infrastructure
+    kubeVersion: '>= 1.14.0-0'
+    name: vault
+    sources:
+    - https://github.com/hashicorp/vault
+    - https://github.com/hashicorp/vault-helm
+    - https://github.com/hashicorp/vault-k8s
+    - https://github.com/hashicorp/vault-csi-provider
+    urls:
+    - https://github.com/mmulholla/charts/releases/download/hashicorp-vault-0.14.0/hashicorp-vault-0.14.0.tgz
+    version: 0.14.0
   infinispan-infinispan:
   - annotations:
       charts.openshift.io/certifiedOpenShiftVersions: N/A
@@ -109,4 +140,4 @@ entries:
     urls:
     - https://github.com/mmulholla/repo/releases/download/test-org-psql-service-0.1.10/test-org-psql-service-0.1.10.tgz
     version: 0.1.10
-generated: '2021-09-22T18:21:43.887326+00:00'
+generated: '2021-09-22T18:41:41.898260+00:00'
