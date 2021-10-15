@@ -107,6 +107,8 @@ jobs:
 
       - name: (PR) check for relase flow
         id: check_if_release_pr
+        env:
+          BOT_NAME: ${{ secrets.BOT_NAME }}
         if: |
           github.event_name == 'pull_request_target' && steps.check_request.outputs.run-tests == 'true'
         run: |
