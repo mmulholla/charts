@@ -54,7 +54,7 @@ jobs:
       - name: Check Request
         id: check_request
         env:
-          BOT_NAME: ${{ secrets.BOT_NAME }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
           # check if workflow testing should run.
           echo "Request type: '$GITHUB_EVENT_NAME'"
